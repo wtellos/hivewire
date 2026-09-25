@@ -10,4 +10,18 @@ class Project extends Model
 {
     /** @use HasFactory<ProjectFactory> */
     use HasFactory;
+
+    protected $fillable = [];
+
+    // Relationship with Client
+    public function project() {
+        return $this->belongsTo(Client::class);
+    }
+
+    public function members() {
+        return $this->belongsToMany(User::class, 'project_members');
+    }
+
+
+
 }
