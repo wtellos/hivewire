@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->enum('status', ['backlog', 'to_do', 'in_progress', 'in_review', 'done'])
-              ->default('backlog');
+                ->default('backlog');
             $table->foreignId('creator_id')->constrained('users');
-            $table->foreignId('project_id')->constrained()->cascadeOnDelete();        
+            $table->foreignId('project_id')->constrained()->cascadeOnDelete();
             $table->integer('progress')->min(0)->max(100);
             $table->date('start_date');
             $table->date('end_date');

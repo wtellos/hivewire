@@ -60,8 +60,8 @@ class User extends Authenticatable implements PasskeyUser
             : $initials;
     }
 
-    public function projects() {
+    public function projects()
+    {
         return $this->belongsToMany(Project::class, 'project_members');
     }
-
 }

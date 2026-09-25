@@ -14,14 +14,13 @@ class Project extends Model
     protected $fillable = [];
 
     // Relationship with Client
-    public function project() {
+    public function project()
+    {
         return $this->belongsTo(Client::class);
     }
 
-    public function members() {
+    public function members()
+    {
         return $this->belongsToMany(User::class, 'project_members');
     }
-
-
-
 }
