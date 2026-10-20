@@ -10,4 +10,10 @@ class Client extends Model
 {
     /** @use HasFactory<ClientFactory> */
     use HasFactory;
+
+    protected $fillable = [];
+
+    // Relationships
+
+
 }
