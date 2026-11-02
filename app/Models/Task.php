@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class Task extends Model
 {
@@ -27,6 +28,7 @@ class Task extends Model
     /**
      * Get the project of this task: $task->project()->where('task', 'done')->get();
      */
+    /** @return BelongsTo<Project, $this> */
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
@@ -35,6 +37,7 @@ class Task extends Model
     /**
      * Get the user who created this task: $task->creator()->where('role', 'admin')->first();
      */
+    /** @return BelongsTo<User, $this> */
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'creator_id');
@@ -43,6 +46,7 @@ class Task extends Model
     /**
      * Get the users assigned to this task: $task->assignees()->where('role', 'admin')->get();
      */
+    /** @return BelongsToMany<User, $this, Pivot> */
     public function assignees(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'task_assignees');
@@ -51,6 +55,7 @@ class Task extends Model
     /**
      * Get the users following this task.
      */
+    /** @return BelongsToMany<User, $this, Pivot> */
     public function followers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'task_followers');

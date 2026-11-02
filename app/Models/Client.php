@@ -17,6 +17,7 @@ class Client extends Model
     /**
      * Get the projects that belong to this client.
      */
+    /** @return HasMany<Project, $this> */
     public function projects(): HasMany
     {
         return $this->hasMany(Project::class);

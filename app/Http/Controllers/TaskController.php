@@ -15,7 +15,7 @@ class TaskController extends Controller
      */
     public function index(): View
     {
-        //
+        return view('tasks.index', ['tasks' => Task::all()]);
     }
 
     /**
@@ -23,7 +23,7 @@ class TaskController extends Controller
      */
     public function create(): View
     {
-        //
+        return view('tasks.create');
     }
 
     /**
@@ -31,7 +31,9 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request): RedirectResponse
     {
-        //
+        Task::create($request->validated());
+
+        return redirect()->route('tasks.index');
     }
 
     /**
@@ -39,7 +41,7 @@ class TaskController extends Controller
      */
     public function show(Task $task): View
     {
-        //
+        return view('tasks.show', ['task' => $task]);
     }
 
     /**
@@ -47,7 +49,7 @@ class TaskController extends Controller
      */
     public function edit(Task $task): View
     {
-        //
+        return view('tasks.edit', ['task' => $task]);
     }
 
     /**
@@ -55,7 +57,9 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskRequest $request, Task $task): RedirectResponse
     {
-        //
+        $task->update($request->validated());
+
+        return redirect()->route('tasks.show', $task);
     }
 
     /**
@@ -63,6 +67,8 @@ class TaskController extends Controller
      */
     public function destroy(Task $task): RedirectResponse
     {
-        //
+        $task->delete();
+
+        return redirect()->route('tasks.index');
     }
 }
