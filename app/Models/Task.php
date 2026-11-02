@@ -5,19 +5,59 @@ namespace App\Models;
 use Database\Factories\TaskFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class Task extends Model
 {
     /** @use HasFactory<TaskFactory> */
     use HasFactory;
 
-    public function assignees()
+    protected $fillable = [
+        'title',
+        'status',
+        'progress',
+        'project_id',
+        'creator_id',
+        'start_date',
+        'end_date',
+        'description',
+    ];
+
+    /**
+     * Get the project of this task: $task->project()->where('task', 'done')->get();
+     */
+    /** @return BelongsTo<Project, $this> */
+    public function project(): BelongsTo
     {
-        return $this->belongsToMany(User::class, 'task_assignee');
+        return $this->belongsTo(Project::class);
     }
 
-    public function followers()
+    /**
+     * Get the user who created this task: $task->creator()->where('role', 'admin')->first();
+     */
+    /** @return BelongsTo<User, $this> */
+    public function creator(): BelongsTo
     {
-        return $this->belongsToMany(User::class, 'task_follower');
+        return $this->belongsTo(User::class, 'creator_id');
+    }
+
+    /**
+     * Get the users assigned to this task: $task->assignees()->where('role', 'admin')->get();
+     */
+    /** @return BelongsToMany<User, $this, Pivot> */
+    public function assignees(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'task_assignees');
+    }
+
+    /**
+     * Get the users following this task.
+     */
+    /** @return BelongsToMany<User, $this, Pivot> */
+    public function followers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'task_followers');
     }
 }

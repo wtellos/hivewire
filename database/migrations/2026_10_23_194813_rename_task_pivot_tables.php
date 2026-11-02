@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -11,9 +10,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('clients', function (Blueprint $table) {
-            //
-        });
+        Schema::rename('task_assignee', 'task_assignees');
+        Schema::rename('task_follower', 'task_followers');
     }
 
     /**
@@ -21,8 +19,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('clients', function (Blueprint $table) {
-            //
-        });
+        Schema::rename('task_assignees', 'task_assignee');
+        Schema::rename('task_followers', 'task_follower');
     }
 };

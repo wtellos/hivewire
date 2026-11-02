@@ -18,7 +18,7 @@ return new class extends Migration
                 ->default('backlog');
             $table->foreignId('creator_id')->constrained('users');
             $table->foreignId('project_id')->constrained()->cascadeOnDelete();
-            $table->integer('progress')->min(0)->max(100);
+            $table->integer('progress')->default(0);
             $table->date('start_date');
             $table->date('end_date');
             $table->text('description');
