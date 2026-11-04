@@ -49,7 +49,7 @@ class Task extends Model
     /** @return BelongsToMany<User, $this, Pivot> */
     public function assignees(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'task_assignees');
+        return $this->belongsToMany(User::class, 'task_assignee')->withTimestamps();
     }
 
     /**
@@ -58,6 +58,6 @@ class Task extends Model
     /** @return BelongsToMany<User, $this, Pivot> */
     public function followers(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'task_followers');
+        return $this->belongsToMany(User::class, 'task_follower')->withTimestamps();
     }
 }

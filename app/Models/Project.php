@@ -32,7 +32,7 @@ class Project extends Model
     /** @return BelongsToMany<User, $this, Pivot> */
     public function members(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'project_members')->withTimestamps();
+        return $this->belongsToMany(User::class, 'project_member')->withTimestamps();
     }
 
     /**
