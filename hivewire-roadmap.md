@@ -23,7 +23,6 @@ A backend-first Laravel app: clients bring in projects, projects break into task
 | `tasks` | `creator_id` → `users`, `project_id` (cascade on delete), `status` enum, `progress`, `start_date`, `end_date`, `description` (text) |
 | `status` enum | `backlog`, `to_do`, `in_progress`, `in_review`, `done` (default `backlog`) |
 | Pivots | `cascadeOnDelete()` on both FKs — deleting a task or user removes only the link row |
-| Open decision | Client → Project: cascade or `restrictOnDelete()`? |
 
 ---
 
@@ -32,14 +31,6 @@ A backend-first Laravel app: clients bring in projects, projects break into task
 - Livewire/Blade + controllers for Clients, Projects, Tasks
 - Eloquent relationships on every model (with return types)
 - Form Requests (`StoreTaskRequest`, `UpdateTaskRequest`); `progress` validated here: `integer|min:0|max:100`
-
-### Clean-up before pushing
-
-- [ ] Raise CLI `memory_limit` in Herd's `php.ini` (PHPStan crashes at 128M)
-- [ ] Add return types to `TaskController` methods (`View` / `RedirectResponse`)
-- [ ] Add `: BelongsToMany` return types on `members()`, `assignees()`, `followers()`, `User::projects()`
-- [ ] Check the odd `project()` method on the `Project` model
-- [ ] Remove `->min(0)` from the `progress` column in the tasks migration (not a real Blueprint method)
 
 ### Local workflow
 
