@@ -69,7 +69,7 @@ class User extends Authenticatable implements PasskeyUser
     /** @return BelongsToMany<Project, $this, Pivot> */
     public function projects(): BelongsToMany
     {
-        return $this->belongsToMany(Project::class, 'project_members');
+        return $this->belongsToMany(Project::class, 'project_member')->withTimestamps();
     }
 
     /**
@@ -87,7 +87,7 @@ class User extends Authenticatable implements PasskeyUser
     /** @return BelongsToMany<Task, $this, Pivot> */
     public function assignedTasks(): BelongsToMany
     {
-        return $this->belongsToMany(Task::class, 'task_assignees');
+        return $this->belongsToMany(Task::class, 'task_assignee')->withTimestamps();
     }
 
     /**
@@ -96,6 +96,6 @@ class User extends Authenticatable implements PasskeyUser
     /** @return BelongsToMany<Task, $this, Pivot> */
     public function followedTasks(): BelongsToMany
     {
-        return $this->belongsToMany(Task::class, 'task_followers');
+        return $this->belongsToMany(Task::class, 'task_follower')->withTimestamps();
     }
 }
