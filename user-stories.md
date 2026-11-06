@@ -40,7 +40,57 @@ Status: `backlog` · `ready` · `in progress` · `done`
 
 ---
 
-## Phase 2 — Roles & Policies
+## Phase 2 — Roles & Capabilities
+
+*Locked-in design, capability matrix and mini-roadmap live in `hivewire-roadmap.md` § Phase 2.*
+
+---
+
+### US-4 · Give Users a Role — `ready`
+
+**As a** developer
+**I want** every user to carry a role — `admin`, `manager`, or `member` — stored as an enum column on `users`
+**So that** every authorization decision in this phase has something concrete to check
+
+**Assumption:** simple enum column, not the `spatie/laravel-permission` package (the package is a possible Phase 10 upgrade — flagged, not committed).
+
+**Acceptance Criteria**
+
+| # | Criteria |
+|---|---|
+| 1 | Migration adds `role` enum (`admin`, `manager`, `member`), default `member` |
+| 2 | Seeder creates one demo user per role |
+| 3 | `User` model exposes readable helpers (e.g. `isAdmin()`, `isManager()`) backed by a PHP enum |
+| 4 | Login/auth behavior is unchanged — roles gate actions, not authentication |
+
+**Definition of Done**
+- `UserRole` PHP enum + migration + model helpers (`isAdmin()`, `isManager()`, `hasRole()`)
+- Factory sets a default role; Pest tests assert the default and each helper
+
+---
+
+### US-4B · Capabilities per Role — `ready`
+
+**As a** developer
+**I want** a `Capability` enum — one case per permission in the role matrix — with `grantedTo(UserRole $role)` as the single place the matrix is defined
+**So that** controllers, views, Phase 3 policies and Phase 7 API token scopes all check the same permission vocabulary instead of raw roles
+
+**Acceptance Criteria**
+
+| # | Criteria |
+|---|---|
+| 1 | `Capability` enum exists with one case per matrix row (see `hivewire-roadmap.md` § Phase 2) |
+| 2 | `grantedTo(UserRole $role): bool` returns true exactly per the matrix for all three roles |
+| 3 | `User::hasCapability(Capability $capability): bool` delegates to `grantedTo()` |
+| 4 | ⚠️ conditional matrix rows are granted by capability alone — the extra condition (e.g. "client has no projects") is deferred to Phase 3 policies |
+
+**Definition of Done**
+- `Capability` enum + `grantedTo()` + `User::hasCapability()`
+- `CapabilityTest` (Pest, unit) asserting every capability × role combination against the matrix
+
+---
+
+## Phase 3 — Policies & Sensitive Fields
 
 **Role matrix (target state)**
 
@@ -55,29 +105,6 @@ Status: `backlog` · `ready` · `in progress` · `done`
 | Create / edit tasks | ✅ | ✅ | only if project member |
 | Assign / unassign task users | ✅ | ✅ | ❌ |
 | Delete tasks | ✅ | ✅ | only own created tasks |
-
----
-
-### US-4 · Give Users a Role — `ready`
-
-**As a** developer
-**I want** every user to carry a role — `admin`, `manager`, or `member` — stored as an enum column on `users`
-**So that** every authorization decision in this phase has something concrete to check
-
-**Assumption:** simple enum column, not the `spatie/laravel-permission` package (the package is a possible Phase 9 upgrade — flagged, not committed).
-
-**Acceptance Criteria**
-
-| # | Criteria |
-|---|---|
-| 1 | Migration adds `role` enum (`admin`, `manager`, `member`), default `member` |
-| 2 | Seeder creates one demo user per role |
-| 3 | `User` model exposes readable helpers (e.g. `isAdmin()`, `isManager()`) backed by a PHP enum |
-| 4 | Login/auth behavior is unchanged — roles gate actions, not authentication |
-
-**Definition of Done**
-- Migration + PHP enum + model helpers
-- Factory sets a default role; Pest tests assert the default and each helper
 
 ---
 
@@ -119,7 +146,7 @@ Status: `backlog` · `ready` · `in progress` · `done`
 | 1 | Admin & manager see `email` and `phone` on client index/detail |
 | 2 | Member sees name and company only — no sensitive fields rendered or returned |
 | 3 | Direct visits to URLs (guessing IDs) are also blocked from seeing sensitive data, not just hidden buttons |
-| 4 | Fields chosen as "sensitive" are recorded in the story/roadmap so Phase 6 API tokens inherit the same rule |
+| 4 | Fields chosen as "sensitive" are recorded in the story/roadmap so Phase 7 API tokens inherit the same rule |
 
 **Definition of Done**
 - `ClientPolicy` view rules enforced in controllers/components
@@ -218,4 +245,4 @@ Status: `backlog` · `ready` · `in progress` · `done`
 
 ## Later phases
 
-Stories for Phases 3–9 will be added as we reach each phase.
+Stories for Phases 4–10 will be added as we reach each phase.
