@@ -9407,7 +9407,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-09-17T11:41:10+00:00"
+            "time": "2026-09-17T11:41:10+00:00",
+            "published-time": "2026-09-17T11:45:04+00:00"
         },
         {
             "name": "pestphp/pest-plugin",
@@ -11946,5 +11947,5 @@
         "php": "^8.3"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.11.0"
 }
