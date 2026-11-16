@@ -1,6 +1,8 @@
 <?php
 
-namespace App;
+// php artisan make:enum Enums\UserRole - https://medium.com/@zulfikarditya/using-php-enums-in-laravel-12-a-comprehensive-guide-af75689f88e8
+
+namespace App\Enums;
 
 enum UserRole: string
 {
@@ -15,5 +17,5 @@ enum UserRole: string
             self::Manager => 'Manager',
             self::Member => 'Project member',
         };
-    }   
+    }
 }
